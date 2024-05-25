@@ -87,4 +87,4 @@ Ways to prevent and deal with human errors:
 Even in non-critical applications, developers have a responsibility to users. However, there are situations where it can make sense to sacrifice reliability (prototypes or narrow profit margins).
 
 ## Sources
-Designing Data-Intensive Applications by Martin Kleppmann
+*Designing Data-Intensive Applications* by Martin Kleppmann
