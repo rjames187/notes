@@ -86,5 +86,27 @@ Ways to prevent and deal with human errors:
 
 Even in non-critical applications, developers have a responsibility to users. However, there are situations where it can make sense to sacrifice reliability (prototypes or narrow profit margins).
 
+## Scalability
+
+Scalability is a system's ability to cope with increased load.
+
+### Describing Load
+
+Load parameters are numbers used to describe load. The best choice of load parameters depends on the system's architecture.
+
+Examples of load parameters:
+- requests per second
+- read to write ratio
+- concurrent users
+- cache hit rate
+
+Load parameters can be very specific to the system. For Twitter, a key load parameter is the distribution of followers per user weighed by how often the users post.
+
+### Describing Performance
+
+It is important to consider how an increase in a load parameter can affect the performance of a system and much resources need to be increased so that performance reamins unchanged.
+
+Percentiles are a good metric for response times because they show how many users experienced a delay. P95, P99, and P999 response times are tail latencies. A service level objective (SLO) or service level agreement (SLA) might set an expectation for median response time and tail latency.
+
 ## Sources
 *Designing Data-Intensive Applications* by Martin Kleppmann
