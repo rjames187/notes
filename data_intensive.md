@@ -122,6 +122,7 @@ Elastic scaling can be useful if load is unpredictable but manual scaling is sim
 Horizontally scaling is straightforward for stateless services but can be tricky for data systems.
 
 A scalable architecture is different for each application and depends on assumptions of which operations will be common and which will be rare. Each application will have different problems.
+
 Examples of problems:
 - Volume of reads
 - Volume of writes
@@ -129,6 +130,77 @@ Examples of problems:
 - Complexity of data
 - Response time requirements
 - Access patterns
+
+## Maintainability
+
+The biggest cost of software is in ongoing maintenance rather than initial development.
+
+Examples of maintenance:
+- Fixing bugs
+- Keeping systems operational
+- Investigating failures
+- Adapting to new platforms
+- Modifying for new usecases
+- Repaying technical debt
+- Adding new features
+
+Design principles to ease maintenance:
+- Operability
+- Simplicity
+- Evolvability
+
+### Operability
+
+An operations team keeps a system running smoothly.
+
+Operations team responsibilities:
+- Monitoring the health of a system and restoring a service if it goes into a bad state
+- Finding out the cause of problems such as system failures and degraded performance
+- Keeping software and platforms up to date (including security patches)
+- Keeping track of how systems affect eachother so problematic changes can be avoided
+- Anticipating future problems and solving them ahead of time (capacity planning)
+- Establishing good practices and tools for deployment and configuration management
+- Performing complex maintenance tasks such as porting to a new platform
+- Maintaining system security as configuration changes
+- Defining processes that make operations predictable and keep the production environment stable
+- Preserving the organization's knowledge about the system
+
+Good operability makes routine tasks easy.
+
+Ways to support good operability:
+- Provide visibility into runtime behavior and system internals
+- Provide support for automation and integration with standard tools
+- Avoid dependency on individual machines
+- Provide good documentation and an understandable operational model
+- Provide good default behavior with freedom to override
+- Self-heal but give admins manual control when needed
+- Behave predictably with minimal surprises
+
+### Simplicity
+
+Large software projects can become complex and difficult to understand increasing maintenance costs.
+
+Symptoms of complexity:
+- Explosion of state space
+- Tight coupling of modules
+- Tangled dependencies
+- Inconsistent naming and terminology
+- Hacks trying to solve performance problems
+
+Accidental complexity in software is not inherent to the problem it solves and should be removed. Abstraction is a good tool for combating accidental complexity.
+
+### Evolvability
+
+Reasons for changing system requirements:
+- New facts
+- Unanticipated usecases
+- Change in business priorities
+- Users requesting new features
+- New platforms
+- Change in legal or regulatory requirements
+- Growth of the system
+
+Agile is a framework for adapting to change which introduces concepts such as refactoring. Evolvability can be thought of as agility for data systems and is closely linked to simplicity.
 
 ## Sources
 *Designing Data-Intensive Applications* by Martin Kleppmann
