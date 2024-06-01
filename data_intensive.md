@@ -104,9 +104,31 @@ Load parameters can be very specific to the system. For Twitter, a key load para
 
 ### Describing Performance
 
-It is important to consider how an increase in a load parameter can affect the performance of a system and much resources need to be increased so that performance reamins unchanged.
+It is important to consider how an increase in a load parameter can affect the performance of a system and much resources need to be increased so that performance remains unchanged.
 
 Percentiles are a good metric for response times because they show how many users experienced a delay. P95, P99, and P999 response times are tail latencies. A service level objective (SLO) or service level agreement (SLA) might set an expectation for median response time and tail latency.
+
+Despite impacting a small proportion of users, tail latencies can be important to consider. For example, at Amazon, the customers experiencing the greatest response times have the most data tied to their accounts.
+However, there is a point where optimizing tail latencies produces diminishing returns. Furthermore, it can be challenging to minimize tail latencies because they are often due to factors outside of the developers' control.
+
+Tail latencies largely stem from queueing delays caused by limits on how many requests servers can process in parallel. Head-of-line blocking can exacerbate queueing delays. 
+
+### Coping with Load
+
+Single-node systems are simpler, but vertical scaling can be very expensive which necessitates horizontal scaling (shared-nothing architecture). Good architectures usually mix both approaches.
+
+Elastic scaling can be useful if load is unpredictable but manual scaling is simpler.
+
+Horizontally scaling is straightforward for stateless services but can be tricky for data systems.
+
+A scalable architecture is different for each application and depends on assumptions of which operations will be common and which will be rare. Each application will have different problems.
+Examples of problems:
+- Volume of reads
+- Volume of writes
+- Volume of data to store
+- Complexity of data
+- Response time requirements
+- Access patterns
 
 ## Sources
 *Designing Data-Intensive Applications* by Martin Kleppmann
