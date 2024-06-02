@@ -157,7 +157,7 @@ MapReduce has been used for a wide range of problems including:
 
 MapReduce has been used in the production indexing system for Google web search.
 
-The indexing code is simpler and more understandable because fault-tolerance, distribution, and paraelleization are abstracted away.
+The indexing code is simpler and more understandable because fault-tolerance, distribution, and parallelization are abstracted away.
 
 It has become easier to change the indexing process.
 
