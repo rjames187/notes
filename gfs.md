@@ -159,7 +159,29 @@ File namespace mutations (like file creation) are handled by the master
 
 Such mutations have atomicity provided by namespace locking
 
-A file region is consistent if all clients see the same data regardless of replica
+A file region is *consistent* if all clients see the same data regardless of replica
+
+A file region is *defined* if mutations happen in their entirety (no partial writes)
+
+Concurrent successful mutations leave a region consistent but undefined (incorrect)
+
+A failed mutation makes the region inconsistent and undefined
+
+How GFS guarantees regions are defined:
+- Applies mutations in the same order in all replicas
+- Uses chunk version numbers to detect stale replicas because of chunkserver downtime
+
+GFS identifies failed chunkservers by handshakes
+
+GFS detects data corruption via checksums
+
+If GFS detects a problem with a replica, it is restored from other replicas
+
+#### Implications for Applications
+
+GFS applications must accomodate the relaxed consistency model
+
+
 
 ## System Interactions
 
