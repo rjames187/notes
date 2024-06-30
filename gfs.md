@@ -181,11 +181,45 @@ If GFS detects a problem with a replica, it is restored from other replicas
 
 GFS applications must accomodate the relaxed consistency model
 
-
-
 ## System Interactions
 
 ### Leases and Mutation Order
+
+Leases maintain conistent mutation order across all replicas of a chunk
+
+Leases minimize management overhead at the master
+
+During a mutation, the replica with the lease (the primary) essentially controls the replication of writes
+
+### Data Flow
+
+Data flow is decoupled from control flow
+
+Control flows from client to primary to secondaries
+
+Data flows linearly along a chain of chunk servers to fully utilize network bandwidth
+
+Data is always forwarded to the closest machine that hasn't received it
+
+### Atomic Record Appends
+
+Traditional writes break with concurrency (not serializable)
+
+Record appends to the end of a file atomically
+
+Record appends eliminate the need for complicated synchronization among clients
+
+### Snapshot
+
+Operation that copies a file or directory tree
+
+Before snapshotting, mastser revokes outstanding leases (so subsequent writes will have to find the new leaseholder)
+
+Master logs operation to disk and duplicates metadata
+
+## Master Operation
+
+### Namespace Management and Locking
 
 
 
