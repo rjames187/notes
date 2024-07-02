@@ -51,3 +51,27 @@ For each chunk ID, master keeps a list of chunk servers with version # and prima
 The above data structure is in memory
 
 Master has a log and checkpoint on disk
+
+## Reads
+
+1. The application has a filename and offset in mind to read from (sends to master)
+2. Master looks up filename and offset to find a specific chunk
+3. Master looks up list of chunk servers that have needed replicas
+4. Client caches the chunk handle and chunk servers sent by the Master (for minimzing load on master)
+5. Chunk server reads data at the offset and returns the data to the client
+
+## Writes
+
+1. If there is no primary, find up to date replicas (having the highest version number)
+2. Pick primary and secondaries from up-to-date replicas
+3. Master increments version number to tells primary and secoondaries the version number
+4. Master gives lease to primary and writes new version num to disk
+5. Client sends the data to the primary and secondaries
+6. After all replicas report they have the data, the client tells the primary to append the data
+7. Primary picks an offset, all replicas told to write at the offset
+8. If primary gets yes from all secondaries, primary sends success to client
+9. If primary gets no answer or problem from secondary, primary send no to client
+10. If client gets a 'no' from primary, client must restart record append operation
+11. 
+
+
