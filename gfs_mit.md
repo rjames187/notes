@@ -72,6 +72,11 @@ Master has a log and checkpoint on disk
 8. If primary gets yes from all secondaries, primary sends success to client
 9. If primary gets no answer or problem from secondary, primary send no to client
 10. If client gets a 'no' from primary, client must restart record append operation
-11. 
+
+## How to Upgrade to Strong Consistency
+
+- Have Primary detect duplicate requests
+- Secondaries shouldn't just blow off and return errors (should be removed from the system in the case of permanent damage)
+- 
 
 
