@@ -111,3 +111,79 @@ The basic Raft algorithm only has 2 RPCs:
 - RequestVote RPC
 - AppendEntries RPC (also used as a heartbeat)
 - There can also be a third RPC for transferring snapshots
+
+### Leader election
+
+Leaders send periodic heartbeats to all followers
+
+If a follower receives no heartbeat before the election timeout, it starts an election
+
+When starting an election, the follower increments its term, becomes a candidate, votes for itself, and issues vote requests to the other servers
+
+Three things can end the candidate state:
+- the candidate wins the election
+- another server establishes itself as leader
+- there is no winner
+
+A candidate wins the election if it receives votes from the majority of servers
+
+Each server votes for at most one candidate in a given term
+
+A new leader sends heartbeat messages to establish authority and prevent elections
+
+If a candidate receives AppendEntries RPC and leader's term is greater than or equal to its term, it becomes a follower because that is a legitimate leader
+
+If there is no election winner (no candidate gets a majority of votes) caniddates will start new elections after timeouts
+
+Randomized timeouts (150-300 ms) ensure split votes (where there is no winner) are rare
+
+### Log replication
+
+only leaders can service client requests
+
+leader appends a command from a client request to its log
+
+then issues AppendEntries RPCs in parallel to the other servers
+
+once entry is safely replicated, leader applies entry to its state machine and returns result to client
+
+if there are failures or network partitions, leader retries AppendEntries RPC until all followers store the log entry
+
+each log entry has a term number used to detect inconsistencies; also has an integer index in the log
+
+a committed log entry has been replicated on a majority of servers and is safe to apply to state machines
+
+committing an entry also commits all previous entries (including those from previous leaders)
+
+leader includes highest committed idx in AppendEntries RPCs (how other servers find out)
+
+Raft Log Matching Property:
+- if 2 entries in different logs have the same index and term they store the same command
+- if 2 entries in different logs have the same index and term, the logs are identical in all preceding entries
+
+log inconistencies only occur when the leader crashes (why Append Entries has a conistency check)
+
+if logs are found inconsistent, the leader deletes entries in followers log after latest agreement and sends the follower all the leaders entries after that point
+
+Leader keeps a nextIndex for each follower; inits nextIndex to just after last one in its log
+
+If logs are inconistent, leader keeps decrementing nextIndex and retrying RPCs until conistent, then does the reconciliation process
+
+### Safety
+
+Raft restricts who can be leader for safety
+
+#### Election restriction
+
+Raft guarantees all command entries from previous leaders are present on the new leader
+
+to win an election a candidate's log must be atleast as up to date as any other log in the majority
+
+voter denies its vote if its own log is more up to date than candidates log
+
+#### Committing entries from previous terms
+
+
+
+
+
