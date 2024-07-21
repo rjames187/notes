@@ -199,7 +199,67 @@ Randomized election timeouts make split votes unlikely
 
 ## Cluster membership changes
 
-Raft needed to allow for cluster config changes without system downtime
+Raft needed to allow for automatic cluster config changes without system downtime
+
+For safety, it must be impossible for two leaders to be elected during the same term during a config transition
+
+Switching all the servers at once is unsafe
+
+Raft config changes use a two phase approach:
+
+Raft first switches to a transitional phase called *Joint Consensus*
+
+The system completes the transition joint consensus is committed
+
+The cluster is split into two independenct majorities: old and new
+
+Any server from either configuration may serve as leader
+
+Agreement for elections and entry committment requires separate majorities from both the old and new configurations
+
+Joint consensus allows individual servers to safely transition while the system still serves requests
+
+Cluster configurations are communicated in special entries in the replicated log
+
+only candidates with the old and new config log can be elected
+
+The old neither the new config can make unilateral decisions at any time
+
+To mitigate time-consuming catchups for new servers, new servers join as non-voting members that still replicate log entries
+
+Servers disregard RequestVote RPCs when they believe a current leader exists to mitigate disruptions some servers being removed from the cluster who call perpetual votes
+
+## Log compaction
+
+Snapshotting is used to free up space for more log entries
+
+The entire system state is persisted as a snapshot which replaces the log up to a certain point
+
+Snapshot also has metadata
+- *last included index*
+- *last included term*
+- the latest cluster configuration
+
+Leader sends an InstallSnapshot RPC when a follower lags so far behind the entries it neededs have been deleted
+
+Upon reception, the follower will usually discard its entire log and then apply the snapshot
+
+Followers typically create their own snapshots
+
+The leader not often sending snapshots departs from the idea of a strong leader. Reasons for this:
+- would slow network bandwidth
+- cheaper for a follower to snapshot its own state
+- the leader's implementation is simplified
+
+## Client interaction
+
+Client first connects to a random server in the cluster
+
+If the server is not the leader, the server tells the client about the leader
+
+If a leader crashses after committing a log entry but before responding to a client, the client will retry and there could be a duplicate request
+
+Solution is for clients to assign serial numbers to each request, if the leader receives a command whose serial number has already been executed, it responds immediately without re-executing the request
 
 
 
