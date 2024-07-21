@@ -183,6 +183,41 @@ voter denies its vote if its own log is more up to date than candidates log
 
 #### Committing entries from previous terms
 
+#### Safety Argument
+
+### Follower and candidate crashes
+
+If a RequestVote or AppendEntries RPC fails, Raft retries indefinitely
+
+If a raft server crashes before completing an RPC, it will receive the same RPC again ... this is not a problem because the RPCs are idempotent
+
+### Timing and availability
+
+For Raft to elect and maintain a leader: broadcastTime < electionTimeout < MTBF
+
+Randomized election timeouts make split votes unlikely
+
+## Cluster membership changes
+
+Raft needed to allow for cluster config changes without system downtime
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
