@@ -221,7 +221,53 @@ Master logs operation to disk and duplicates metadata
 
 ### Namespace Management and Locking
 
+GFS represents its namespace as a lookup table mapping pathnames to metadata
 
+Prefix compression enables the table to be efficiently represented in memory
+
+Each node in the namespace tree (either a file or directory) has a read-write lock
+
+Each master operation acquires locks on the nodes involved
+
+Example involving snapshot of `/home/user` to `/save/user`:
+1. Read locks acquired on `/home` and `/save`
+2. Write locks acquired on   `/home/user` and `/save/user`
+
+A read lock on a directory prevents deletion, renaming, and snapshotting
+
+A write lock on a file serializes file creation with the same name
+
+### Replica Placement
+
+Chunk replicas are spread across racks for availability (no single point of failure)
+
+Read traffic can exploit the aggregate bandwidth of multiple racks
+
+### Creation, Re-replication, Rebalancing
+
+Factors master considers when placing chunk replicas:
+- Seeks chunk servers with below-average disk space utilizaion
+- Limit the number of recent creations on each chunkserver (because of imminent heavy write traffic)
+- Spread chunk replicas across racks
+
+Master re-replicates a chunk when number of available replicas gets too low for reasons such as:
+- a chunkserver becomes unavailable
+- a replica is corrupted
+- disk is disabled because of errors
+- replication goal is increased
+
+Factors influencing the prioritization of chunk re-replication
+- Prioritizes chunks that are farther from the replication goal
+- Prioritize re-replication of live files over deleted files
+- Prioritize chunks blocking client progress
+
+New replicas are placed with the same goals as with creation
+
+Master limits active cloning operations to not overwhelm client traffic
+
+Each chunkservers limits bandwidth for clone operations by throttling reads to source chunk server
+
+Sometimes the master rebalances (moves) replicas for better disk space and load balancing
 
 ## Source
 
