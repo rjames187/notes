@@ -269,6 +269,99 @@ Each chunkservers limits bandwidth for clone operations by throttling reads to s
 
 Sometimes the master rebalances (moves) replicas for better disk space and load balancing
 
+### Garbage Collection
+
+Rather than immediately, GFS lazily reclaims storage after a file is deleted
+
+#### Mechanism
+
+When a file is deleted, it's renamed to a hidden name including the deletion timestamp
+
+A file can be undeleted by renaming it
+
+As the master scans the file system, it deletes hidden files (including memory metadata) that are more than 3 days old
+
+Orphaned chunks are also deleted 
+
+In regular heartbeats a chunkserver reports the chunks it has and the master replies with chunks that are safe to be deleted
+
+#### Discussion
+
+Advantages of garbage collection over immediate deletion:
+- simple and reliable; when chunk creation doesnt succeed, there may be replicas the master doesnt know about; replica deletion messages could be lost and need to be resent
+- running it in batches in the background amortizes cost and frees the master to respond to more important things
+- delay in reclamation safeguards against accidental irreversible deletion
+
+A disadvantage is that not being able to immediately reclaim space can lead to storage being tight
+
+Addressed by:
+- permanently deleting a file if explicitly deleted again
+- allowing the user to apply different replication and reclamation policies to parts of the namespace
+
+### Stale Replica Detection
+
+Chunk replicas become stale if a chunkserver goes down and misses mutations
+
+For each chunk, the master keeps a chunk version number which is incremented when a new lease is granted
+
+Online chunk servers will increment their chunk version numbers when master 
+
+Chunk servers report their chunk version numbers so master can see which have stale chunks
+
+## Fault Tolerance and Diagnosis
+
+### High Availability
+
+Two strategies for high availability: fast recovery and replication
+
+#### Fast Recovery
+
+Master and chunkserver restore their state and restart in seconds
+
+No distinction between normal and abnormal  termination
+
+#### Chunk Replication
+
+Chunks are replicated on multiple chunk servers across racks
+
+Users can specify replication goal for different namespaces
+
+Num replicas may fall under replication goal due to chunkservers going offline or detection of corrupted replicas via checksums
+
+#### Master Replication
+
+Master's operation log and checkpoints are replicated on multiple machines
+
+A state mutation is only committed after a log record is flushed to disk locally and on all replicas
+
+One master process remains in charge of mutations and background activities
+
+If the master fails, a new master process is started elsewhere with a replica's operation log
+
+The name the clients use to reach the master is a DNS alias that can be changed if the master's machine changes
+
+If a master goes down, shadow masters still provide read-only access (they lag a bit)
+
+Shadow master applies replicated operation log to its state machine
+
+### Data Integrity
+
+Chunkservers use checksumming to detect data corruption
+
+Disk failures can cause data corruption and regularly occur
+
+Checksumming is needed because comparing across replicas is impractical
+
+Each 64 KB block of a chunk has a 32 bit checksum
+
+Checksums are kept in memory and stored persistently with logging
+
+During reads, chunkserver verifies the checksum of the requested data blocks
+
+If a block doesn't match the checksum, chunkserver returns an error, another replica is read, and chunk is cloned from another replica
+
+
+
 ## Source
 
 http://nil.csail.mit.edu/6.824/2020/papers/gfs.pdf
