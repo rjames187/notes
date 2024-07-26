@@ -358,9 +358,29 @@ Checksums are kept in memory and stored persistently with logging
 
 During reads, chunkserver verifies the checksum of the requested data blocks
 
-If a block doesn't match the checksum, chunkserver returns an error, another replica is read, and chunk is cloned from another replica
+If a block doesn't match the checksum, chunkserver returns an error, another replica is read, and chunk is cloned from a non-corrupt replica to a new replica
 
+Checksum computation is optimized for append writes because that is the dominant workload
 
+### Diagnostic Tools
+
+Logging has helped in problem isolation, debugging, and performance analysis
+
+Diagnostic logs record events such as:
+- chunkservers going up or down
+- RPC requests and replies
+
+Performance impact of logging is small because logs are written sequentially and asynchronously
+
+Most recent events are kept in memory
+
+## Experiences
+
+GFS was originally designed for production systems but grew to include R&D tasks
+
+Grew to support permissions and quotas
+
+Mismatches between Linux driver and disk protocols led to data corruption and motivated the use of checksums
 
 ## Source
 
