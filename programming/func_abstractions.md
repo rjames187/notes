@@ -13,6 +13,8 @@ A **function** encapsulates logic that manipulates data.
 
 An **object** bundles together data and the logic that manipulates that data, managing the complexity of both.
 
+Expressions are evaluated while statements are executed and change the interpreter's state.
+
 Principles of debugging:
 - Test incrementally (individually test small, modular components)
 - Isolate errors
@@ -36,6 +38,15 @@ Aspects of a functional abstraction:
 - Domain: set of arguments it can take
 - Range: set of values it can return
 - Intent: relationship it computes between inputs and outputs (and any side effects)
+
+Principles for designing functions:
+- Each function should have one job identifiable with a short name
+- Create functional abstractions instead of coding redundant logic
+- Functions should be defined generally
+
+Doc strings may describe the job, arguments, and behavior of a function.
+
+
 
 ## Source:
 
