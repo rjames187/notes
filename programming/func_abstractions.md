@@ -46,7 +46,19 @@ Principles for designing functions:
 
 Doc strings may describe the job, arguments, and behavior of a function.
 
+## Higher-Order Functions
 
+Functions that manipulate functions are higher-order functions.
+
+Lexical scope: Locally defined functions have access to name bindings in the scope in which they are defined.
+
+Currying is a functional transformation that turns a single function with multiple arguments into a chain of functions each with a single argument.
+
+"Rights and Privileges" of First-Class Elements:
+- may be bound to names
+- may be passed as arguments to functions
+- may be returned as results of functions
+- may be included in data structures
 
 ## Source:
 
