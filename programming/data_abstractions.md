@@ -4,6 +4,12 @@ Native data types evaluate to values of native data types called literals.
 
 There are built-in functions and operators to manipulate the values of native types.
 
+## Data Abstraction
+
+An abstract data type allows the manipulation of compound objects as units. 
+
+Data abstractions: functions enforce an abstraction barrier between the representation and use of data.
+
 ## Sequences
 
 A sequence is an ordered collection of values.
