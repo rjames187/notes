@@ -25,3 +25,9 @@ Examples of sequences:
 - arrays
 - strings
 - linked lists (non-native)
+
+## Mutable Data
+
+Instances of primitive built-in objects are typically immutable.
+
+Mutable objects represent values that change over time. 
