@@ -8,7 +8,7 @@ There are built-in functions and operators to manipulate the values of native ty
 
 An abstract data type allows the manipulation of compound objects as units. 
 
-Data abstractions: functions enforce an abstraction barrier between the representation and use of data.
+Data abstractions: functions enforce an abstraction barrier between the representation/implementation and use of data.
 
 ## Sequences
 
@@ -30,4 +30,14 @@ Examples of sequences:
 
 Instances of primitive built-in objects are typically immutable.
 
-Mutable objects represent values that change over time. 
+Mutable objects represent values that change over time.
+
+## Object-Oriented Programming
+
+Like functions, classes create abstraction barriers between the use and representation of data.
+
+Objects respond to behavioral requests and have local state.
+
+Objects abstract the complexity of both state and behavior.
+
+A class is a template. An object is an instance of a class. 
