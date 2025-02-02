@@ -40,4 +40,20 @@ Objects respond to behavioral requests and have local state.
 
 Objects abstract the complexity of both state and behavior.
 
-A class is a template. An object is an instance of a class. 
+A class is a template. An object is an instance of a class.
+
+## Multiple Representations
+
+Abstraction barriers enable the separation of the use and representation of data.
+
+It can be useful for a system to deal with multiple representations of data.
+
+Multiple representations are necessary when working on large software systems with a lot of people for a long time because it is not possible for everyone to agree in advance on data representation.
+
+Abstraction barriers can also isolate design choices from eachother allowing them to coexist.
+
+An interface is a set of shared attribute names with behaviorial specifications.
+
+
+
+
