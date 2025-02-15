@@ -54,6 +54,14 @@ Abstraction barriers can also isolate design choices from eachother allowing the
 
 An interface is a set of shared attribute names with behaviorial specifications.
 
+## Efficiency
+
+Different ways of representing and processing data have different efficiencies (measures of time and memory required for computation)
+
+Determining how much space and time a program uses is difficult because it depends on many factors
+
+It is easier to categorize processes based on how the resource requirements grow as a function of input
+
 
 
 
