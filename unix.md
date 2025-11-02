@@ -51,6 +51,29 @@ Use `grep searchstring file` to search for occurrences of searchstring in file. 
 
 ## Permissions
 
-`sudo` allows the user to run commands as the superuser. 
+`sudo` allows the user to run commands as the superuser.
+
+Permissions for a file or directory represented as a ten character string:
+- starts with either d (denoting a directory) or - (denoting a file)
+- Then: rwx (meaning read, write execute); Replacing a character with - means that permission is not granted.
+- There are rwx strings for owner, group, and others
+
+Use `ls -l` to see permissions.
+
+Use `chmod u=permissions, g=permissions, o=permissions filename/directory` to change permissions.
+
+U is the owner, g stands for group, o stands for others.
+
+Add `-R` after `chmod` to recursively change permissions for all files in a directory.
+
+Use `chown user file/directory` to change the owner of a file/directory. Add `-R` for a directory.
+
+`sudo` is required to change the permissions or ownership of a file/direcctory you don't own.
+
+## Programs
+
+A shebang, `#! interpreter [optional-arg]` specifies which interpreter a script should use.
+
+Use `export var=val` to create an environment variable which can be accessed by programs running in your shell.
 
 
