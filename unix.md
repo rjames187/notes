@@ -76,4 +76,39 @@ A shebang, `#! interpreter [optional-arg]` specifies which interpreter a script 
 
 Use `export var=val` to create an environment variable which can be accessed by programs running in your shell.
 
+Use `ctrl + c` to send a SIGINT signal to a running program to stop it.
+
+Use `kill <PID>` to kill a process. This is a heavier-duty alternative to SIGINT. 
+
+Use `ps aux` to see a list of all running processes and their IDs.
+
+Use `top` to see which programs are using the most CPU and memory.
+
+## Input/Output
+
+Stdout and Stderr are both output streams for a program. 
+
+The `>` operator redirects Stdout.
+
+The `2>` operator redirects Stderr.
+
+Use the `|` operator to feed the output of one program into the Stdin of another program.
+
+## Unix Philosophy
+
+- Write programs that do one thing and do it well
+- Write programs to work together
+- Write programs to handle text streams because that is a universal interface
+
+## Packages
+
+Package managers donwload, install, update, and remove software and manage dependencies.
+
+APT is a common package manager. 
+
+Use `sudo apt install <package-name>` to install a package.
+
+Use `which <command>` to see where a command is installed.
+
+
 
