@@ -52,7 +52,13 @@ Add `--name <name>` to give a container an address in a network
 
 Options:
 - -f for a continuous stream
-- 
+
+## Resource Management
+
+`docker stats CONTAINER_ID` to see status on resource usage
+
+`--cpus="0.25"` flag to add a cpu limit
+`--memory` flag to add a memory limit
 
 
 
